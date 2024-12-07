@@ -12,14 +12,14 @@ contract AITradingAgent is Ownable {
     constructor() Ownable(msg.sender) {}
 
     // Events
-    event TradeExecuted(address indexed user, string tradeId, address token, uint256 amount, uint256 price);
+    event TradeExecuted(address indexed user, string tradeId, string token, uint256 amount, uint256 price);
     event AttestationRecorded(address indexed user, string tradeId, string details);
 
     // Structures
     struct Trade {
         address user;
         string tradeId;
-        address token;
+        string token;
         uint256 amount;
         uint256 price;
         uint256 timestamp;
@@ -34,13 +34,12 @@ contract AITradingAgent is Ownable {
     // Trade Execution
     function executeTrade(
         address user,
-        address token,
+        string memory token,
         uint256 amount,
         uint256 price,
         string memory tradeId
     ) external onlyOwner {
         require(user != address(0), "Invalid user address");
-        require(token != address(0), "Invalid token address");
         require(amount > 0, "Invalid trade amount");
 
         // Record the trade
@@ -86,4 +85,3 @@ contract AITradingAgent is Ownable {
         require(IERC20(token).transfer(msg.sender, amount), "Transfer failed");
     }
 }
-
